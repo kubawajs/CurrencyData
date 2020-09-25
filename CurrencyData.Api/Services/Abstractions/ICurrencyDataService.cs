@@ -7,7 +7,6 @@ namespace CurrencyData.Api.Services.Abstractions
 {
     public interface ICurrencyDataService
     {
-        // TODO: change into currency item
-        Task<ApiResponseData> GetCurrencies(string code1, string code2, DateTime startDate, DateTime endDate);
+        Task<ApiResponseData> GetCurrencies(Dictionary<string, string> currencyCodes, DateTime startDate, DateTime endDate);
     }
 }

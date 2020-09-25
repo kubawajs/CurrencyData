@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\EcbSdmx.Core\EcbSdmx.Core.csproj" />
+    <ProjectReference Include="..\EcbSdmx.Infrastructure\EcbSdmx.Infrastructure.csproj" />
   </ItemGroup>
 
   <ItemGroup>

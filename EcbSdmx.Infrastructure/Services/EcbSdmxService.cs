@@ -3,17 +3,18 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 using EcbSdmx.Core.Models.Response;
-using EcbSdmx.Core.Services.Abstractions;
+using EcbSdmx.Infrastructure.Services.Abstractions;
 
-namespace EcbSdmx.Core.Services
+namespace EcbSdmx.Infrastructure.Services
 {
     public class EcbSdmxService : IEcbSdmxService
     {
         private readonly HttpClient _httpClient;
 
-        public EcbSdmxService()
+        public EcbSdmxService(HttpClient httpClient)
         {
-            _httpClient = new HttpClient {BaseAddress = new Uri("https://sdw-wsrest.ecb.europa.eu/service/data/EXR/")};
+            _httpClient = httpClient;
+            _httpClient.BaseAddress = new Uri("https://sdw-wsrest.ecb.europa.eu/service/data/EXR/");
         }
 
         public async Task<ApiResponseData> Get(string firstCode, string secondCode, DateTime startDate, DateTime endDate)

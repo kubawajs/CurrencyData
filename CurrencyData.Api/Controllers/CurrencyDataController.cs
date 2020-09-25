@@ -3,20 +3,19 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Caching.Distributed;
 
 namespace CurrencyData.Api.Controllers
 {
-    // TODO: swagger
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class CurrencyDataController
     {
         private readonly ILogger<CurrencyDataController> _logger;
         private readonly ICurrencyDataService _currencyDataService;
 
-        public CurrencyDataController(ILogger<CurrencyDataController> logger, ICurrencyDataService currencyDataService)
+        public CurrencyDataController(ILogger<CurrencyDataController> logger, ICurrencyDataService currencyDataService, IDistributedCache distributedCache)
         {
             _logger = logger;
             _currencyDataService = currencyDataService;
@@ -33,19 +32,24 @@ namespace CurrencyData.Api.Controllers
         /// <param name="apiKey"></param>
         /// <returns></returns>
         [HttpGet]
+        [ResponseCache(VaryByQueryKeys = new[] {"currencyCodes", "startDate", "endDate"}, Duration = 120)]
         public async Task<ActionResult<string>> Get([FromQuery] Dictionary<string, string> currencyCodes, DateTime startDate, DateTime endDate, string apiKey)
         {
             var now = DateTime.Now;
-            if(now < startDate || now < endDate)
+            if (now < startDate || now < endDate)
+            {
+                _logger.LogWarning("Future start or end date.");
                 return new NotFoundResult();
+            }
 
-            var key = currencyCodes.First().Key;
-
-            var result = await _currencyDataService.GetCurrencies(key, currencyCodes[key], startDate, endDate);
-
+            var result = await _currencyDataService.GetCurrencies(currencyCodes, startDate, endDate);
             if (result == null)
+            {
+                _logger.LogWarning($"No results found for given parameters: {currencyCodes}, {startDate}, {endDate}");
                 return new NotFoundResult();
+            }
 
+            _logger.LogInformation($"Successfully retrieved date for given parameters: {currencyCodes}, {startDate}, {endDate}");
             return new JsonResult(result);
         }
     }

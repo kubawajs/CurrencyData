@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using EcbSdmx.Core.Models.Response;
 
-namespace EcbSdmx.Core.Services.Abstractions
+namespace EcbSdmx.Infrastructure.Services.Abstractions
 {
     public interface IEcbSdmxService
     {

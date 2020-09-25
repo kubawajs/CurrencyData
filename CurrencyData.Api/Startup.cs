@@ -5,14 +5,13 @@ using CurrencyData.Api.Repositories;
 using CurrencyData.Api.Repositories.Abstractions;
 using CurrencyData.Api.Services;
 using CurrencyData.Api.Services.Abstractions;
-using EcbSdmx.Core.Services;
-using EcbSdmx.Core.Services.Abstractions;
+using EcbSdmx.Infrastructure.Services;
+using EcbSdmx.Infrastructure.Services.Abstractions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.OpenApi.Models;
 
 namespace CurrencyData.Api
 {
@@ -30,9 +29,13 @@ namespace CurrencyData.Api
         {
             services.AddControllers();
 
+            // Caching
+            services.AddResponseCaching();
+            services.AddDistributedMemoryCache();
+
             // Services
             services.AddScoped<ICurrencyDataService, CurrencyDataService>();
-            services.AddScoped<IEcbSdmxService, EcbSdmxService>();
+            services.AddHttpClient<IEcbSdmxService, EcbSdmxService>();
 
             // Repositories
             services.AddScoped<ICurrencyDataRepository, CurrencyDataRepository>();
@@ -64,10 +67,9 @@ namespace CurrencyData.Api
             });
 
             app.UseHttpsRedirection();
-
             app.UseRouting();
-
             app.UseAuthorization();
+            app.UseResponseCaching();
 
             app.UseEndpoints(endpoints =>
             {

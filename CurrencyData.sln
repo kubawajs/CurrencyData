@@ -13,6 +13,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "EcbSdmx", "EcbSdmx", "{6020
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EcbSdmx.Core", "EcbSdmx.Core\EcbSdmx.Core.csproj", "{EBBF1DEE-C07D-4341-8A82-C49225192A23}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EcbSdmx.Infrastructure", "EcbSdmx.Infrastructure\EcbSdmx.Infrastructure.csproj", "{B188DEEB-6F11-4031-BC6B-894AADAE2F6B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -31,6 +33,10 @@ Global
 		{EBBF1DEE-C07D-4341-8A82-C49225192A23}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EBBF1DEE-C07D-4341-8A82-C49225192A23}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EBBF1DEE-C07D-4341-8A82-C49225192A23}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B188DEEB-6F11-4031-BC6B-894AADAE2F6B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B188DEEB-6F11-4031-BC6B-894AADAE2F6B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B188DEEB-6F11-4031-BC6B-894AADAE2F6B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B188DEEB-6F11-4031-BC6B-894AADAE2F6B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -39,6 +45,7 @@ Global
 		{5DC1E101-C612-4B61-8B57-C7964559FA01} = {FABE989E-39CF-4C0B-B950-4D4EF2B7FC33}
 		{18B7956A-3044-4959-9F8C-63AE9D293C0C} = {FABE989E-39CF-4C0B-B950-4D4EF2B7FC33}
 		{EBBF1DEE-C07D-4341-8A82-C49225192A23} = {60203D32-4A64-417B-AD22-6FE0FC834C45}
+		{B188DEEB-6F11-4031-BC6B-894AADAE2F6B} = {60203D32-4A64-417B-AD22-6FE0FC834C45}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {1C433D98-C62E-48D5-892A-ECBEE8964DD8}
