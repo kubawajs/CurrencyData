@@ -1,10 +1,10 @@
-﻿using CurrencyData.Api.Repositories.Abstractions;
-using CurrencyData.Api.Services.Abstractions;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using CurrencyData.Api.Extensions;
+using CurrencyData.Infrastructure.Extensions;
+using CurrencyData.Infrastructure.Repositories.Abstractions;
+using CurrencyData.Infrastructure.Services.Abstractions;
 using EcbSdmx.Core.Models.Response;
 using EcbSdmx.Infrastructure.Services.Abstractions;
 using Microsoft.Extensions.Caching.Distributed;

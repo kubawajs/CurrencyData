@@ -1,10 +1,11 @@
 using System;
 using System.IO;
 using System.Reflection;
-using CurrencyData.Api.Repositories;
-using CurrencyData.Api.Repositories.Abstractions;
 using CurrencyData.Api.Services;
-using CurrencyData.Api.Services.Abstractions;
+using CurrencyData.Infrastructure;
+using CurrencyData.Infrastructure.Repositories;
+using CurrencyData.Infrastructure.Repositories.Abstractions;
+using CurrencyData.Infrastructure.Services.Abstractions;
 using EcbSdmx.Infrastructure.Services;
 using EcbSdmx.Infrastructure.Services.Abstractions;
 using Microsoft.AspNetCore.Builder;
@@ -31,14 +32,9 @@ namespace CurrencyData.Api
 
             // Caching
             services.AddResponseCaching();
-            services.AddDistributedMemoryCache();
 
-            // Services
-            services.AddScoped<ICurrencyDataService, CurrencyDataService>();
-            services.AddHttpClient<IEcbSdmxService, EcbSdmxService>();
-
-            // Repositories
-            services.AddScoped<ICurrencyDataRepository, CurrencyDataRepository>();
+            // Libraries
+            services.AddCurrencyDataInfrastructure();
 
             // Register Swagger
             services.AddSwaggerGen(c =>

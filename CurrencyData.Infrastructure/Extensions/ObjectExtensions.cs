@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 
-namespace CurrencyData.Api.Extensions
+namespace CurrencyData.Infrastructure.Extensions
 {
     public static class ObjectExtensions
     {

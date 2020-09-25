@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using EcbSdmx.Core.Models.Response;
 
-namespace CurrencyData.Api.Services.Abstractions
+namespace CurrencyData.Infrastructure.Services.Abstractions
 {
     public interface ICurrencyDataService
     {
