@@ -18,10 +18,10 @@ namespace CurrencyData.Infrastructure.Mapping
             CreateMap<ApiResponseData, ApiResponseDataDTO>()
                 .ForMember(dest => dest.FromCurrency,
                     opt 
-                        => opt.MapFrom(src => src.DataSet.Series.SeriesKey.Value.Where(x => x.Id == Currency)))
+                        => opt.MapFrom(src => src.DataSet.Series.SeriesKey.Value.First(x => x.Id == Currency).Value))
                 .ForMember(dest => dest.ToCurrency,
                     opt 
-                        => opt.MapFrom(src => src.DataSet.Series.SeriesKey.Value.Where(x => x.Id == CurrencyDenom)))
+                        => opt.MapFrom(src => src.DataSet.Series.SeriesKey.Value.First(x => x.Id == CurrencyDenom).Value))
                 .ForMember(dest => dest.StartDate,
                     opt => opt.MapFrom(src => Convert.ToDateTime(src.DataSet.Series.Observations.First().Dimension.Value)))
                 .ForMember(dest => dest.EndDate,
@@ -33,7 +33,7 @@ namespace CurrencyData.Infrastructure.Mapping
                 .ForMember(dest => dest.Date, opt
                     => opt.MapFrom(src => Convert.ToDateTime(src.Dimension.Value)))
                 .ForMember(dest => dest.Rate, opt 
-                    => opt.MapFrom(src => double.Parse(src.Value.Value, CultureInfo.InvariantCulture)));
+                    => opt.MapFrom(src => src.Value.Value));
         }
     }
 }

@@ -40,6 +40,7 @@ namespace CurrencyData.Infrastructure.Services
             }
 
             var response = await _currencyDataRepository.GetAsync(currencyKey, currencyCodes[currencyKey], startDate, endDate);
+            response.ExchangeRates = response.ExchangeRates.Where(x => x.Rate.HasValue);
 
             await _distributedCache.SetAsync(cacheKey, response.ToByteArray(),
                 new DistributedCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromMinutes(30)));
