@@ -19,7 +19,7 @@ namespace CurrencyData.UnitTests.Controllers
         //    var controller = new CurrencyDataController(logger.Object, service.Object);
 
         //    // Act
-        //    var result = await controller.Get("EUR", "USD", DateTime.MinValue, DateTime.MaxValue, "key");
+        //    var result = await controller.GetAsync("EUR", "USD", DateTime.MinValue, DateTime.MaxValue, "key");
 
         //    // Assert
         //    var expected = new JsonResult("hello");

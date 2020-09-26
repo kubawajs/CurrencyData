@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Xml.Serialization;
 
-namespace EcbSdmx.Core.Models.Response
+namespace EcbSdmx.Core.Domain.Response
 {
     [Serializable]
     [XmlRoot(ElementName = "Header", Namespace = "http://www.sdmx.org/resources/sdmxml/schemas/v2_1/message")]

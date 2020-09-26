@@ -1,8 +1,8 @@
 using System;
 using System.IO;
 using System.Reflection;
-using CurrencyData.Api.Services;
 using CurrencyData.Infrastructure;
+using CurrencyData.Infrastructure.Extensions;
 using CurrencyData.Infrastructure.Repositories;
 using CurrencyData.Infrastructure.Repositories.Abstractions;
 using CurrencyData.Infrastructure.Services.Abstractions;

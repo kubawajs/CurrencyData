@@ -22,6 +22,7 @@ namespace CurrencyData.Api.Controllers
         }
 
         // TODO: authorized with api key
+        // TODO: handle error on get
         // [Authorize]
         /// <summary>
         /// Returns collection of currency data for specific currencies and date interval
@@ -32,7 +33,7 @@ namespace CurrencyData.Api.Controllers
         /// <param name="apiKey"></param>
         /// <returns></returns>
         [HttpGet]
-        [ResponseCache(VaryByQueryKeys = new[] {"currencyCodes", "startDate", "endDate"}, Duration = 120)]
+        [ResponseCache(Duration = 120, Location = ResponseCacheLocation.Any, VaryByQueryKeys = new[] { "currencyCodes", "startDate", "endDate" })]
         public async Task<ActionResult<string>> Get([FromQuery] Dictionary<string, string> currencyCodes, DateTime startDate, DateTime endDate, string apiKey)
         {
             var now = DateTime.Now;
