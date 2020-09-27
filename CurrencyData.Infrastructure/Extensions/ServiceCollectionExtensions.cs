@@ -2,6 +2,7 @@
 using CurrencyData.Infrastructure.Mapping;
 using CurrencyData.Infrastructure.Repositories;
 using CurrencyData.Infrastructure.Repositories.Abstractions;
+using CurrencyData.Infrastructure.Repositories.Mocks;
 using CurrencyData.Infrastructure.Services;
 using CurrencyData.Infrastructure.Services.Abstractions;
 using EcbSdmx.Infrastructure.Services;
@@ -21,11 +22,13 @@ namespace CurrencyData.Infrastructure.Extensions
             services.AddAutoMapper(typeof(MappingProfile));
 
             // Services
+            services.AddScoped<IAuthenticationService, AuthenticationService>();
             services.AddScoped<ICurrencyDataService, CurrencyDataService>();
             services.AddHttpClient<IEcbSdmxService, EcbSdmxService>();
 
             // Repositories
             services.AddScoped<ICurrencyDataRepository, CurrencyDataRepository>();
+            services.AddScoped<IUserRepository, StaticUserRepository>();
 
             return services;
         }

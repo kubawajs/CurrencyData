@@ -1,13 +1,15 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using CurrencyData.Infrastructure.Services.Abstractions;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using CurrencyData.Infrastructure.Services.Abstractions;
-using Microsoft.Extensions.Caching.Distributed;
 
 namespace CurrencyData.Api.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("api/[controller]")]
     public class CurrencyDataController
@@ -21,20 +23,17 @@ namespace CurrencyData.Api.Controllers
             _currencyDataService = currencyDataService;
         }
 
-        // TODO: authorized with api key
         // TODO: handle error on get
-        // [Authorize]
         /// <summary>
         /// Returns collection of currency data for specific currencies and date interval
         /// </summary>
         /// <param name="currencyCodes"></param>
         /// <param name="startDate"></param>
         /// <param name="endDate"></param>
-        /// <param name="apiKey"></param>
         /// <returns></returns>
         [HttpGet]
         [ResponseCache(Duration = 120, Location = ResponseCacheLocation.Any, VaryByQueryKeys = new[] { "currencyCodes", "startDate", "endDate" })]
-        public async Task<ActionResult<string>> Get([FromQuery] Dictionary<string, string> currencyCodes, DateTime startDate, DateTime endDate, string apiKey)
+        public async Task<ActionResult<string>> Get([FromQuery] Dictionary<string, string> currencyCodes, DateTime startDate, DateTime endDate)
         {
             var now = DateTime.Now;
             if (now < startDate || now < endDate)

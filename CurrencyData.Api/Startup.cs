@@ -1,18 +1,16 @@
 using System;
 using System.IO;
 using System.Reflection;
-using CurrencyData.Infrastructure;
+using System.Text;
 using CurrencyData.Infrastructure.Extensions;
-using CurrencyData.Infrastructure.Repositories;
-using CurrencyData.Infrastructure.Repositories.Abstractions;
-using CurrencyData.Infrastructure.Services.Abstractions;
-using EcbSdmx.Infrastructure.Services;
-using EcbSdmx.Infrastructure.Services.Abstractions;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Logging;
+using Microsoft.IdentityModel.Tokens;
 
 namespace CurrencyData.Api
 {
@@ -29,6 +27,23 @@ namespace CurrencyData.Api
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+
+            // Authentication
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(x =>
+                {
+                    x.RequireHttpsMetadata = false;
+                    x.SaveToken = true;
+                    x.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuer = true,
+                        ValidateLifetime = true,
+                        ValidateIssuerSigningKey = true,
+                        ValidIssuer = Configuration["Jwt:Issuer"],
+                        ValidAudience = Configuration["Jwt:Audience"],
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Jwt:SecretKey"]))
+                    };
+                });
 
             // Caching
             services.AddResponseCaching();
@@ -52,6 +67,7 @@ namespace CurrencyData.Api
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                IdentityModelEventSource.ShowPII = true;
             }
 
             // Enable Swagger and JSON endpoint
@@ -64,6 +80,7 @@ namespace CurrencyData.Api
 
             app.UseHttpsRedirection();
             app.UseRouting();
+            app.UseAuthentication();
             app.UseAuthorization();
             app.UseResponseCaching();
 
