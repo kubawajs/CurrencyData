@@ -35,16 +35,22 @@ namespace CurrencyData.Infrastructure.Services
                 return null;
             }
 
+            // Set date as recent working day
+            startDate = startDate.GetRecentWorkingDayDate();
+            endDate = endDate.GetRecentWorkingDayDate();
+
+            // Get from cache
             var currencyKey = currencyCodes.First().Key;
             var cacheKey = GenerateCacheKey(currencyKey, currencyCodes[currencyKey], startDate.ToString("yyyy-MM-dd"), endDate.ToString("yyyy-MM-dd"));
+            
             var cachedResponse = await _distributedCache.GetAsync(cacheKey);
-
             if (cachedResponse != null)
             {
                 _logger.LogInformation($"Returning value from distributed cache for key: {cacheKey}");
                 return cachedResponse.FromByteArray<ResponseData>();
             }
 
+            // Get from external API
             try
             {
                 var response = await _currencyDataRepository.GetAsync(currencyKey, currencyCodes[currencyKey], startDate, endDate);
