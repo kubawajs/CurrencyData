@@ -28,8 +28,12 @@ namespace CurrencyData.Infrastructure.Services
 
         public async Task<ApiResponseDataDTO> GetCurrencies(Dictionary<string, string> currencyCodes, DateTime startDate, DateTime endDate)
         {
+            if (!currencyCodes.Any())
+            {
+                return null;
+            }
+
             var currencyKey = currencyCodes.First().Key;
-            
             var cacheKey = GenerateCacheKey(currencyKey, currencyCodes[currencyKey], startDate.ToString("yyyy-MM-dd"), endDate.ToString("yyyy-MM-dd"));
             var cachedResponse = await _distributedCache.GetAsync(cacheKey);
 
@@ -39,14 +43,24 @@ namespace CurrencyData.Infrastructure.Services
                 return cachedResponse.FromByteArray<ApiResponseDataDTO>();
             }
 
-            var response = await _currencyDataRepository.GetAsync(currencyKey, currencyCodes[currencyKey], startDate, endDate);
-            response.ExchangeRates = response.ExchangeRates.Where(x => x.Rate.HasValue);
+            try
+            {
+                var response = await _currencyDataRepository.GetAsync(currencyKey, currencyCodes[currencyKey], startDate, endDate);
+                response.ExchangeRates = response.ExchangeRates.Where(x => x.Rate.HasValue);
 
-            await _distributedCache.SetAsync(cacheKey, response.ToByteArray(),
-                new DistributedCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromMinutes(30)));
-            _logger.LogInformation($"Setting value in distributed cache for key: {cacheKey}");
+                await _distributedCache.SetAsync(cacheKey, response.ToByteArray(),
+                    new DistributedCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromMinutes(30)));
+                _logger.LogInformation($"Setting value in distributed cache for key: {cacheKey}");
 
-            return response;
+                return response;
+            }
+            catch (Exception e)
+            {
+                _logger.LogError($"An error occured during retrieving data from EcbService. Error details: {e.Message}");
+                _logger.LogError(e, e.Message);
+
+                return null;
+            }
         }
 
         public static string GenerateCacheKey(string inCode, string outCode, string startDate, string endDate) =>

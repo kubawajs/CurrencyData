@@ -42,6 +42,12 @@ namespace CurrencyData.Api.Controllers
                 return new NotFoundResult();
             }
 
+            if (currencyCodes.Count == 0)
+            {
+                _logger.LogWarning("No currency specified.");
+                return new NotFoundResult();
+            }
+
             var result = await _currencyDataService.GetCurrencies(currencyCodes, startDate, endDate);
             if (result == null)
             {
