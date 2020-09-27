@@ -28,33 +28,32 @@ namespace CurrencyData.Infrastructure.Services
             _distributedCache = distributedCache;
         }
 
-        public async Task<ResponseData> GetCurrencies(string inCode, string outCode, DateTime startDate, DateTime endDate)
+        public async Task<ResponseData> GetCurrencies(QueryParameters queryParameters)
         {
             // Set date as recent working day
-            startDate = startDate.GetRecentWorkingDayDate();
-            endDate = endDate.GetRecentWorkingDayDate();
+            queryParameters.StartPeriod = queryParameters.StartPeriod.GetRecentWorkingDayDate();
+            queryParameters.EndPeriod = queryParameters.EndPeriod.GetRecentWorkingDayDate();
 
             // Get from cache
-            var cacheKey = GenerateCacheKey(inCode, outCode, startDate.ToString("yyyy-MM-dd"), endDate.ToString("yyyy-MM-dd"));
-            
-            var cachedResponse = await _distributedCache.GetAsync(cacheKey);
+           
+            var cachedResponse = await _distributedCache.GetAsync(queryParameters.CacheKey);
             if (cachedResponse != null)
             {
-                _logger.LogInformation($"Returning value from distributed cache for key: {cacheKey}");
+                _logger.LogInformation($"Returning value from distributed cache for key: {queryParameters.CacheKey}");
                 return cachedResponse.FromByteArray<ResponseData>();
             }
 
             // Get from external API
             try
             {
-                var response = await _currencyDataRepository.GetAsync(inCode, outCode, startDate, endDate);
+                var response = await _currencyDataRepository.GetAsync(queryParameters);
                 response.ExchangeRates = response.ExchangeRates.Where(x => x.Rate.HasValue).ToList();
 
-                await _distributedCache.SetAsync(cacheKey, response.ToByteArray(),
+                await _distributedCache.SetAsync(queryParameters.CacheKey, response.ToByteArray(),
                         new DistributedCacheEntryOptions().SetSlidingExpiration(
                             TimeSpan.FromDays(double.Parse(_config[Constants.Configuration.DistributedCache.SlidingExpirationTimeDays]))
                         ));
-                _logger.LogInformation($"Setting value in distributed cache for key: {cacheKey}");
+                _logger.LogInformation($"Setting value in distributed cache for key: {queryParameters.CacheKey}");
 
                 return response;
             }
@@ -65,8 +64,5 @@ namespace CurrencyData.Infrastructure.Services
                 return null;
             }
         }
-
-        public static string GenerateCacheKey(string inCode, string outCode, string startDate, string endDate) =>
-            $"{inCode};{outCode};{startDate};{endDate}";
     }
 }

@@ -1,11 +1,11 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
+using EcbSdmx.Core.Domain;
 using EcbSdmx.Core.Domain.Response;
 
 namespace EcbSdmx.Infrastructure.Services.Abstractions
 {
     public interface IEcbSdmxService
     {
-        Task<ApiResponseData> GetAsync(string firstCode, string secondCode, DateTime startDate, DateTime endDate);
+        Task<ApiResponseData> GetAsync(EcbSdmxQueryParameters queryParameters);
     }
 }

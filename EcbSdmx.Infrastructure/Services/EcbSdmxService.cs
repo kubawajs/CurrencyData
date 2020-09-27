@@ -2,6 +2,7 @@
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
+using EcbSdmx.Core.Domain;
 using EcbSdmx.Core.Domain.Response;
 using EcbSdmx.Infrastructure.Services.Abstractions;
 
@@ -17,11 +18,11 @@ namespace EcbSdmx.Infrastructure.Services
             _httpClient.BaseAddress = new Uri("https://sdw-wsrest.ecb.europa.eu/service/data/EXR/");
         }
 
-        public async Task<ApiResponseData> GetAsync(string firstCode, string secondCode, DateTime startDate, DateTime endDate)
+        public async Task<ApiResponseData> GetAsync(EcbSdmxQueryParameters queryParameters)
         {
             // TODO: to const/config
             var endpoint =
-                $"D.{firstCode}.{secondCode}.SP00.A?startPeriod={startDate:yyyy-MM-dd}&endPeriod={endDate:yyyy-MM-dd}&detail=dataonly";
+                $"D.{queryParameters.FromCurrency}.{queryParameters.ToCurrency}.SP00.A?startPeriod={queryParameters.StartPeriod:yyyy-MM-dd}&endPeriod={queryParameters.EndPeriod:yyyy-MM-dd}&detail=dataonly";
             var response = await _httpClient.GetAsync(endpoint);
 
             response.EnsureSuccessStatusCode();

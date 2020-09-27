@@ -2,8 +2,8 @@
 using CurrencyData.Infrastructure.Domain;
 using CurrencyData.Infrastructure.Repositories.Abstractions;
 using EcbSdmx.Infrastructure.Services.Abstractions;
-using System;
 using System.Threading.Tasks;
+using EcbSdmx.Core.Domain;
 
 namespace CurrencyData.Infrastructure.Repositories
 {
@@ -18,10 +18,10 @@ namespace CurrencyData.Infrastructure.Repositories
             _mapper = mapper;
         }
 
-        public async Task<ResponseData> GetAsync(string inCurrency, string outCurrency, DateTime startDate,
-            DateTime endDate)
+        public async Task<ResponseData> GetAsync(QueryParameters queryParameters)
         {
-            var response = await _ecbSdmxService.GetAsync(inCurrency, outCurrency, startDate, endDate);
+            var ecbSdmxQueryParams = _mapper.Map<EcbSdmxQueryParameters>(queryParameters);
+            var response = await _ecbSdmxService.GetAsync(ecbSdmxQueryParams);
             return _mapper.Map<ResponseData>(response);
         }
     }

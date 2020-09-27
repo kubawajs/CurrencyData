@@ -1,14 +1,12 @@
-﻿using CurrencyData.Infrastructure.Services.Abstractions;
+﻿using CurrencyData.Infrastructure.Domain;
+using CurrencyData.Infrastructure.Services.Abstractions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Caching.Distributed;
+using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc.TagHelpers.Cache;
-using Microsoft.Extensions.Caching.Memory;
 
 namespace CurrencyData.Api.Controllers
 {
@@ -47,40 +45,32 @@ namespace CurrencyData.Api.Controllers
                 return new NotFoundResult();
             }
 
-            if (currencyCodes.Count == 0)
+            var queryParams = QueryParameters.Create(currencyCodes, startDate, endDate);
+            if (queryParams.FromCurrency == null || queryParams.ToCurrency == null)
             {
                 _logger.LogWarning("No currency specified.");
                 return new NotFoundResult();
             }
 
-            if (!currencyCodes.Any())
+            if (_memoryCache.TryGetValue(queryParams.CacheKey, out var cacheEntry))
             {
-                return null;
-            }
-            var currencyKey = currencyCodes.First().Key;
-            var cacheKey = GenerateCacheKey(currencyKey, currencyCodes[currencyKey], startDate.ToString("yyyy-MM-dd"),
-                endDate.ToString("yyyy-MM-dd"));
-            
-            if (!_memoryCache.TryGetValue(cacheKey, out var cacheEntry))
-            {
-                var result = await _currencyDataService.GetCurrencies(currencyKey, currencyCodes[currencyKey], startDate, endDate);
-                _memoryCache.Set(cacheKey, result, new MemoryCacheEntryOptions()
-                    .SetSlidingExpiration(TimeSpan.FromSeconds(30)));
-                _logger.LogInformation($"Added entry to in-memory cache: {cacheKey}");
-                cacheEntry = result;
+                _logger.LogInformation($"[MEMORY CACHE] Successfully retrieved data for given parameters: {currencyCodes}, {startDate}, {endDate}");
+                return new JsonResult(cacheEntry);
             }
 
-            if (cacheEntry == null)
+            var result = await _currencyDataService.GetCurrencies(queryParams);
+            if (result == null)
             {
                 _logger.LogWarning($"No results found for given parameters: {currencyCodes}, {startDate}, {endDate}");
                 return new NotFoundResult();
             }
 
-            _logger.LogInformation($"Successfully retrieved date for given parameters: {currencyCodes}, {startDate}, {endDate}");
-            return new JsonResult(cacheEntry);
-        }
+            _memoryCache.Set(queryParams.CacheKey, result, new MemoryCacheEntryOptions()
+                .SetSlidingExpiration(TimeSpan.FromSeconds(30)));
+            _logger.LogInformation($"Added entry to in-memory cache: {queryParams.CacheKey}");
+            _logger.LogInformation($"Successfully retrieved data for given parameters: {currencyCodes}, {startDate}, {endDate}");
 
-        public static string GenerateCacheKey(string inCode, string outCode, string startDate, string endDate) =>
-            $"{inCode};{outCode};{startDate};{endDate}";
+            return new JsonResult(result);
+        }
     }
 }
