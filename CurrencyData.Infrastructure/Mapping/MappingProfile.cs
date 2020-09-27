@@ -15,7 +15,7 @@ namespace CurrencyData.Infrastructure.Mapping
 
         public MappingProfile()
         {
-            CreateMap<ApiResponseData, ApiResponseDataDTO>()
+            CreateMap<EcbSdmx.Core.Domain.Response.ApiResponseData, ResponseData>()
                 .ForMember(dest => dest.FromCurrency,
                     opt 
                         => opt.MapFrom(src => src.DataSet.Series.SeriesKey.Value.First(x => x.Id == Currency).Value))

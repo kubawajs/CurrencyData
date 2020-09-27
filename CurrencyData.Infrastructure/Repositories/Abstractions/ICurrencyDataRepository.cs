@@ -6,6 +6,6 @@ namespace CurrencyData.Infrastructure.Repositories.Abstractions
 {
     public interface ICurrencyDataRepository
     {
-        Task<ApiResponseDataDTO> GetAsync(string inCurrency, string outCurrency, DateTime startDate, DateTime endDate);
+        Task<ResponseData> GetAsync(string inCurrency, string outCurrency, DateTime startDate, DateTime endDate);
     }
 }

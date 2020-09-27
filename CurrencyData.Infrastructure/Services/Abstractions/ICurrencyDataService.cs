@@ -7,6 +7,6 @@ namespace CurrencyData.Infrastructure.Services.Abstractions
 {
     public interface ICurrencyDataService
     {
-        Task<ApiResponseDataDTO> GetCurrencies(Dictionary<string, string> currencyCodes, DateTime startDate, DateTime endDate);
+        Task<ResponseData> GetCurrencies(Dictionary<string, string> currencyCodes, DateTime startDate, DateTime endDate);
     }
 }

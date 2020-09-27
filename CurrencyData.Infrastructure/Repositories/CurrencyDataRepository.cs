@@ -1,10 +1,9 @@
-﻿using System;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using CurrencyData.Infrastructure.Domain;
 using CurrencyData.Infrastructure.Repositories.Abstractions;
 using EcbSdmx.Infrastructure.Services.Abstractions;
-using Microsoft.Extensions.Logging;
+using System;
+using System.Threading.Tasks;
 
 namespace CurrencyData.Infrastructure.Repositories
 {
@@ -19,11 +18,11 @@ namespace CurrencyData.Infrastructure.Repositories
             _mapper = mapper;
         }
 
-        public async Task<ApiResponseDataDTO> GetAsync(string inCurrency, string outCurrency, DateTime startDate,
+        public async Task<ResponseData> GetAsync(string inCurrency, string outCurrency, DateTime startDate,
             DateTime endDate)
         {
             var response = await _ecbSdmxService.GetAsync(inCurrency, outCurrency, startDate, endDate);
-            return _mapper.Map<ApiResponseDataDTO>(response);
+            return _mapper.Map<ResponseData>(response);
         }
     }
 }

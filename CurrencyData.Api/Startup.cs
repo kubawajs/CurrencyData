@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using System.Reflection;
 using System.Text;
+using CurrencyData.Infrastructure;
 using CurrencyData.Infrastructure.Extensions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -50,7 +51,7 @@ namespace CurrencyData.Api
             services.AddResponseCaching();
 
             // Libraries
-            services.AddCurrencyDataInfrastructure();
+            services.AddCurrencyDataInfrastructure(Configuration);
 
             // Register Swagger
             services.AddSwaggerGen(c =>

@@ -7,16 +7,22 @@ using CurrencyData.Infrastructure.Services;
 using CurrencyData.Infrastructure.Services.Abstractions;
 using EcbSdmx.Infrastructure.Services;
 using EcbSdmx.Infrastructure.Services.Abstractions;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace CurrencyData.Infrastructure.Extensions
+namespace CurrencyData.Infrastructure
 {
     public static class ServiceCollectionExtension
     {
-        public static IServiceCollection AddCurrencyDataInfrastructure(this IServiceCollection services)
+        public static IServiceCollection AddCurrencyDataInfrastructure(this IServiceCollection services, IConfiguration configuration)
         {
             // Caching
-            services.AddDistributedMemoryCache();
+            services.AddDistributedSqlServerCache(options =>
+            {
+                options.ConnectionString = configuration[Constants.Configuration.DistributedCache.ConnectionString];
+                options.SchemaName = "dbo";
+                options.TableName = configuration[Constants.Configuration.DistributedCache.TableName];
+            });
 
             // Mapping
             services.AddAutoMapper(typeof(MappingProfile));
