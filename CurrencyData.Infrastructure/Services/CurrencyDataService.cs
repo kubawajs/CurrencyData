@@ -28,20 +28,14 @@ namespace CurrencyData.Infrastructure.Services
             _distributedCache = distributedCache;
         }
 
-        public async Task<ResponseData> GetCurrencies(Dictionary<string, string> currencyCodes, DateTime startDate, DateTime endDate)
+        public async Task<ResponseData> GetCurrencies(string inCode, string outCode, DateTime startDate, DateTime endDate)
         {
-            if (!currencyCodes.Any())
-            {
-                return null;
-            }
-
             // Set date as recent working day
             startDate = startDate.GetRecentWorkingDayDate();
             endDate = endDate.GetRecentWorkingDayDate();
 
             // Get from cache
-            var currencyKey = currencyCodes.First().Key;
-            var cacheKey = GenerateCacheKey(currencyKey, currencyCodes[currencyKey], startDate.ToString("yyyy-MM-dd"), endDate.ToString("yyyy-MM-dd"));
+            var cacheKey = GenerateCacheKey(inCode, outCode, startDate.ToString("yyyy-MM-dd"), endDate.ToString("yyyy-MM-dd"));
             
             var cachedResponse = await _distributedCache.GetAsync(cacheKey);
             if (cachedResponse != null)
@@ -53,7 +47,7 @@ namespace CurrencyData.Infrastructure.Services
             // Get from external API
             try
             {
-                var response = await _currencyDataRepository.GetAsync(currencyKey, currencyCodes[currencyKey], startDate, endDate);
+                var response = await _currencyDataRepository.GetAsync(inCode, outCode, startDate, endDate);
                 response.ExchangeRates = response.ExchangeRates.Where(x => x.Rate.HasValue).ToList();
 
                 await _distributedCache.SetAsync(cacheKey, response.ToByteArray(),

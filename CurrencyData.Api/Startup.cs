@@ -49,6 +49,7 @@ namespace CurrencyData.Api
 
             // Caching
             services.AddResponseCaching();
+            services.AddMemoryCache();
 
             // Libraries
             services.AddCurrencyDataInfrastructure(Configuration);
