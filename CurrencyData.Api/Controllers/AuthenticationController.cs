@@ -1,9 +1,7 @@
 ﻿using CurrencyData.Infrastructure.Domain;
 using CurrencyData.Infrastructure.Services.Abstractions;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace CurrencyData.Api.Controllers

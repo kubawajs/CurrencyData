@@ -8,7 +8,7 @@ namespace EcbSdmx.Core.Domain.Response
     public class ResponseHeader
     {
         [XmlElement(ElementName = "ID", Namespace = "http://www.sdmx.org/resources/sdmxml/schemas/v2_1/message")]
-        public string ID { get; set; }
+        public string Id { get; set; }
 
         [XmlElement(ElementName = "Prepared", Namespace = "http://www.sdmx.org/resources/sdmxml/schemas/v2_1/message")]
         public string Prepared { get; set; }

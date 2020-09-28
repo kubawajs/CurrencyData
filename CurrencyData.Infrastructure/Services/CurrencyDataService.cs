@@ -6,7 +6,6 @@ using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -35,7 +34,6 @@ namespace CurrencyData.Infrastructure.Services
             queryParameters.EndPeriod = queryParameters.EndPeriod.GetRecentWorkingDayDate();
 
             // Get from cache
-           
             var cachedResponse = await _distributedCache.GetAsync(queryParameters.CacheKey);
             if (cachedResponse != null)
             {
@@ -59,7 +57,7 @@ namespace CurrencyData.Infrastructure.Services
             }
             catch (Exception e)
             {
-                _logger.LogError($"An error occured during retrieving data from EcbService. Error details: {e.Message}");
+                _logger.LogError($"An error occurred during retrieving data from EcbService. Error details: {e.Message}");
                 _logger.LogError(e, e.Message);
                 return null;
             }
