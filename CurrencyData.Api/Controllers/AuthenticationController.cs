@@ -3,6 +3,8 @@ using CurrencyData.Infrastructure.Services.Abstractions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.Threading.Tasks;
+using Microsoft.IdentityModel.JsonWebTokens;
+using Microsoft.IdentityModel.Tokens;
 
 namespace CurrencyData.Api.Controllers
 {
@@ -19,7 +21,14 @@ namespace CurrencyData.Api.Controllers
             _authenticationService = authenticationService;
         }
 
+        /// <summary>
+        /// Authentication endpoint.
+        /// </summary>
+        /// <param name="loginUser">User data (username and password).</param>
+        /// <returns>JSON Web Token for given user data.</returns>
         [HttpPost]
+        [ProducesResponseType(typeof(AuthenticationResponse), 200)]
+        [ProducesResponseType(401)]
         public async Task<IActionResult> Login([FromBody] User loginUser)
         {
             var authenticationResponse = await _authenticationService.Authenticate(loginUser);

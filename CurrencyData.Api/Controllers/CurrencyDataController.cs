@@ -28,15 +28,17 @@ namespace CurrencyData.Api.Controllers
         }
 
         /// <summary>
-        /// Returns collection of currency data for specific currencies and date interval
+        /// Returns collection of currency data for specified currencies and date interval
         /// </summary>
-        /// <param name="currencyCodes"></param>
-        /// <param name="startDate"></param>
-        /// <param name="endDate"></param>
-        /// <returns></returns>
+        /// <param name="currencyCodes">Currency codes dictionary. Key stands for "in" currency, value is a result currency, e.g. currencyCodes[USD]=EUR will return exchange rates for USD to EUR.</param>
+        /// <param name="startDate">Start date for currency rate.</param>
+        /// <param name="endDate">End date for currency rate.</param>
+        /// <returns>Currency exchange rates for given parameters.</returns>
         [HttpGet]
+        [ProducesResponseType(typeof(ResponseData), 200)]
+        [ProducesResponseType(404)]
         [ResponseCache(Duration = 60, Location = ResponseCacheLocation.Any, VaryByQueryKeys = new[] { "currencyCodes", "startDate", "endDate" })]
-        public async Task<ActionResult<string>> Get([FromQuery] Dictionary<string, string> currencyCodes, DateTime startDate, DateTime endDate)
+        public async Task<ActionResult<ResponseData>> Get([FromQuery] Dictionary<string, string> currencyCodes, DateTime startDate, DateTime endDate)
         {
             var now = DateTime.Now;
             if (now < startDate || now < endDate)
