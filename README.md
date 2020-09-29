@@ -7,16 +7,7 @@ Aveneo recruitment task solution.
 * Visual Studio 2019
 * SQL Server 2019
 
-## Technologies
-
-* .NET Core 3.1
-* SQL Server 2019
-* Swagger
-* Automapper
-* Log4net
-* JWT
-
-## Installation
+## Getting Started
 
 1. Clone repository. Open solution file in Visual Studio.
 2. Run command:
@@ -38,11 +29,22 @@ dotnet sql-cache create "Data Source=(local);Initial Catalog=<your catalog name>
 ```
 4. Build and run solution.
 
+## Built With
+
+* .NET Core 3.1
+* SQL Server 2019
+* Swagger
+* Automapper
+* Log4net
+* JWT
+
 ## API
 
 API Documentation was created using the [Swagger](https://aspnetcore.readthedocs.io/en/stable/tutorials/web-api-help-pages-using-swagger.html). It is available at url: localhost/api/index.html
 
 ### Authentication
+
+[!alt](./img/api-authentication.PNG)
 
 For testing purposes application uses mock user repository which stores only one user:
 
@@ -79,7 +81,7 @@ Response body:
 
 ### Currency Data
 
-
+[!alt](./img/api-currencydata.PNG)
 
 **Endpoint:**
 ```
@@ -89,12 +91,21 @@ localhost/api/currencydata?currencyCodes[CODE1]=CODE2&startDate={yyyy-MM-dd}&end
 Response body:
 ```json
 {
-  "result": true,
-  "user": {
-    "username": "string",
-    "password": "string"
-  },
-  "token": "string"
+    "fromCurrency": "PLN",
+    "toCurrency": "EUR",
+    "startDate": "2010-08-10T00:00:00",
+    "endDate": "2020-09-11T00:00:00",
+    "exchangeRates": [
+        {
+            "date": "2010-08-10T00:00:00",
+            "rate": 3.9841
+        },
+        {
+            "date": "2010-08-11T00:00:00",
+            "rate": 4.0055
+        }
+        ...
+    ]
 }
 ```
 
@@ -108,12 +119,12 @@ API uses JWT for generating Bearer token. The token is then used for authenticat
 
 #### In-Memory Cache
 
-Application uses built-in .NET Core mechanism for memory caching API responses.
+Application uses _Microsoft.Extensions.Caching.Memory_ for in memory caching API responses.
 
 #### Distributed Cache
 
 Application uses SQL Server as distributed cache for storing responses from external API - [EECB SDMX 2.1 RESTful web service](https://sdw-wsrest.ecb.europa.eu/help/).
-SQL Caching table was created using [sql-cache tool](https://www.nuget.org/packages/dotnet-sql-cache).
+SQL Caching table was created with [sql-cache tool](https://www.nuget.org/packages/dotnet-sql-cache).
 
 Db Scheme:
 | Column name        | Data type           | Allow nulls  |
@@ -126,10 +137,15 @@ Db Scheme:
 
 ### Logging
 
-Logging  was implemented using the [log4net](https://logging.apache.org/log4net/) library. Log data is saved to the main.log file (.\CurrencyData.Api\bin\Debug\netcoreapp3.1\main.log)
+Logging  was implemented using the [log4net](https://logging.apache.org/log4net/) library. Log data is saved to the _main.log_ file (.\CurrencyData.Api\bin\Debug\netcoreapp3.1\main.log)
 
 ## Testing
 
-## Contact
+Response Times:
+* Non-cached: ~627 ms
+* SQL cache: ~28 ms
+* In-memory cache: ~12 ms
 
-Jakub Wajs[]
+## Author
+
+* **Jakub Wajs** - [github](https://github.com/kubawajs)
