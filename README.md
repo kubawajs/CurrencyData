@@ -14,7 +14,7 @@ Aveneo recruitment task solution.
 ```bash
 dotnet sql-cache create "Data Source=(local);Initial Catalog=<your catalog name>;Integrated Security=True;" dbo <your cache dbo name>
 ```
-3. Change values in appsettings.json to match: your SQL connection string, table name, your local port number (for JWT issuer and audience).
+3. Change values in _appsettings.json_ to match: your SQL connection string, table name, your local port number (for JWT issuer and audience).
 ```json
   "Jwt": {
     "SecretKey": "ExampleSecretKeyForJWT",
@@ -40,7 +40,7 @@ dotnet sql-cache create "Data Source=(local);Initial Catalog=<your catalog name>
 
 ## API
 
-API Documentation was created using the [Swagger](https://aspnetcore.readthedocs.io/en/stable/tutorials/web-api-help-pages-using-swagger.html). It is available at url: localhost/api/index.html
+API Documentation was created using the [Swagger](https://aspnetcore.readthedocs.io/en/stable/tutorials/web-api-help-pages-using-swagger.html). It is available at url: _localhost/api/index.html_
 
 ### Authentication
 
@@ -137,7 +137,7 @@ Db Scheme:
 
 ### Logging
 
-Logging  was implemented using the [log4net](https://logging.apache.org/log4net/) library. Log data is saved to the _main.log_ file (.\CurrencyData.Api\bin\Debug\netcoreapp3.1\main.log)
+Logging  was implemented using the [log4net](https://logging.apache.org/log4net/) library. Log data is saved to the _main.log_ file (_.\CurrencyData.Api\bin\Debug\netcoreapp3.1\main.log_)
 
 ## Testing
 
