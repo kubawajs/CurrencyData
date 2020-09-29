@@ -44,7 +44,7 @@ API Documentation was created using the [Swagger](https://aspnetcore.readthedocs
 
 ### Authentication
 
-[!alt](./img/api-authentication.PNG)
+![Authentication Endpoint](./img/api-authentication.PNG)
 
 For testing purposes application uses mock user repository which stores only one user:
 
@@ -81,7 +81,7 @@ Response body:
 
 ### Currency Data
 
-[!alt](./img/api-currencydata.PNG)
+![Currency Data Endpoint](./img/api-currencydata.PNG)
 
 **Endpoint:**
 ```
