@@ -1,0 +1,98 @@
+{
+	"info": {
+		"_postman_id": "67ebd20e-963a-4d84-90c9-b1941dd26b0c",
+		"name": "CurrencyData",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Authorization",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"admin\",\r\n    \"password\": \"12345\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{apiUrl}}/api/authentication",
+					"host": [
+						"{{apiUrl}}"
+					],
+					"path": [
+						"api",
+						"authentication"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Example GET Request",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "password",
+							"value": "{{bearerToken}}",
+							"type": "string"
+						},
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbiIsImp0aSI6IjE0Mjg0M2Q0LWY5NDgtNDE4Ni05ZmIwLWRmMDZiNDM5YmI1OCIsImV4cCI6MTYxMDIyMTIzOSwiaXNzIjoiaHR0cHM6Ly9sb2NhbGhvc3Q6NDQzOTciLCJhdWQiOiJodHRwczovL2xvY2FsaG9zdDo0NDM5NyJ9.ZmtddwdVOtm-sxP-kKTa3SImD59cb7sT1Kc6GMFFN9s",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{apiUrl}}/api/currencydata?currencyCodes[{{IN_CURRENCY}}]={{OUT_CURRENCY}}&startDate={{START_DATE}}&endDate={{OUT_DATE}}",
+					"host": [
+						"{{apiUrl}}"
+					],
+					"path": [
+						"api",
+						"currencydata"
+					],
+					"query": [
+						{
+							"key": "currencyCodes[{{IN_CURRENCY}}]",
+							"value": "{{OUT_CURRENCY}}"
+						},
+						{
+							"key": "startDate",
+							"value": "{{START_DATE}}"
+						},
+						{
+							"key": "endDate",
+							"value": "{{OUT_DATE}}"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "password",
+				"value": "{{bearerToken}}",
+				"type": "string"
+			},
+			{
+				"key": "token",
+				"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbiIsImp0aSI6IjE0Mjg0M2Q0LWY5NDgtNDE4Ni05ZmIwLWRmMDZiNDM5YmI1OCIsImV4cCI6MTYxMDIyMTIzOSwiaXNzIjoiaHR0cHM6Ly9sb2NhbGhvc3Q6NDQzOTciLCJhdWQiOiJodHRwczovL2xvY2FsaG9zdDo0NDM5NyJ9.ZmtddwdVOtm-sxP-kKTa3SImD59cb7sT1Kc6GMFFN9s",
+				"type": "string"
+			}
+		]
+	}
+}

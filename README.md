@@ -10,7 +10,11 @@ Aveneo recruitment task solution.
 ## Getting Started
 
 1. Clone repository. Open solution file in Visual Studio.
-2. Run command:
+2. Run commands - install dotnet-sql-cache package:
+```bash
+dotnet tool install --global dotnet-sql-cache
+```
+Create sql cache database:
 ```bash
 dotnet sql-cache create "Data Source=(local);Initial Catalog=<your catalog name>;Integrated Security=True;" dbo <your cache dbo name>
 ```
@@ -31,7 +35,7 @@ dotnet sql-cache create "Data Source=(local);Initial Catalog=<your catalog name>
 
 ## Built With
 
-* .NET Core 3.1
+* .NET 5
 * SQL Server 2019
 * Swagger
 * Automapper
