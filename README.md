@@ -141,7 +141,7 @@ Db Scheme:
 
 ### Logging
 
-Logging  was implemented using the [log4net](https://logging.apache.org/log4net/) library. Log data is saved to the _main.log_ file (_.\CurrencyData.Api\bin\Debug\netcoreapp3.1\main.log_)
+Logging  was implemented using the [log4net](https://logging.apache.org/log4net/) library. Log data is saved to the _main.log_ file (_.\CurrencyData.Api\bin\Debug\netcoreapp5\main.log_)
 
 ## Testing
 
