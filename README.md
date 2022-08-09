@@ -1,6 +1,6 @@
 # CurrencyData
 
-Aveneo recruitment task solution.
+Some recruitment task solution.
 
 ## Prerequisities
 
